@@ -10,7 +10,10 @@ const websocket = {
         const onOpen = () => {
             console.log("ws 통신 시작")
         }
-        const onClose = () => {
+        const closeSocket =  this.close.bind(this);
+        const onClose = function(){
+            //서버가 종료된 경우 처리.
+            closeSocket();
             console.log("ws 통신 종료")
         }
         this._socket = ws;
