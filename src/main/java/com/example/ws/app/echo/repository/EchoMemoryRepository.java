@@ -1,7 +1,6 @@
 package com.example.ws.app.echo.repository;
 
-import com.example.ws.app.echo.dto.EchoMessageDTO;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import com.example.ws.app.echo.dto.EchoPayloadDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -15,19 +14,18 @@ import java.util.List;
 @Repository
 public class EchoMemoryRepository {
     //구조 : topic, List<>
-    private MultiValueMap<String,EchoMessageDTO> messageCacheMap = new LinkedMultiValueMap<>();
+    private MultiValueMap<String, EchoPayloadDTO> messageCacheMap = new LinkedMultiValueMap<>();
     private static int MAX_MESSAGE_COUNT_PER_TOPIC = 10;
 
-    public void push(EchoMessageDTO message){
-        String key = message.getSeason();
-        messageCacheMap.add(key,message);
-        List<EchoMessageDTO> messages =  messageCacheMap.get(key);
+    public void push(String season, EchoPayloadDTO message){
+        messageCacheMap.add(season,message);
+        List<EchoPayloadDTO> messages =  messageCacheMap.get(season);
         if(messages.size() > MAX_MESSAGE_COUNT_PER_TOPIC){
             messages.remove(0);
         }
     }
 
-    public List<EchoMessageDTO> getAllMessage(String season){
+    public List<EchoPayloadDTO> getAllMessage(String season){
         return Collections.unmodifiableList(messageCacheMap.get(season));
     }
 }

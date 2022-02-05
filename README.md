@@ -130,3 +130,45 @@
 3. SimpMessagingTemplate 
 
 
+## 메시지 전달 과정
+### org.springframework.messaging.handler.invocation.AbstractMethodMessageHandler
+- handle 관련 메서드 호출 순서 
+  - handleMessage 
+  - handleMessageInternal
+  - handleMatch
+- argumentResolvers 
+  - HandlerMethodArgumentResolverComposite
+  - 디폴트 HandlerMethodArgumentResolver 및 대상 파라미터 타입 (debug로 확인, org.springframework.messaging.handler.annotation.support 에 모여있음)
+    - HeaderMethodArgumentResolver
+      - @Header
+    - HeadersMethodArgumentResolver 
+      - @Headers Map 
+      - MessageHeaders headers
+      - MessageHeaderAccessor headerAccessor
+    - DestinationVariableMethodArgumentResolver
+      - @DestinationVariable
+      - mvc의 pathVariable과 비슷함.
+      - https://stackoverflow.com/questions/27047310/path-variables-in-spring-websockets-sendto-mapping
+    - PrincipalMethodArgumentResolver
+      - Principal principal
+    - MessageMethodArgumentResolver
+      - Message<?> message
+    - PayloadMethodArgumentResolver
+      - @Payload 
+      - 모든 타입 지원
+        - PayloadMethodArgumentResolver는 항상 가장 마지막에 등록 되어야 함
+      
+- returnValueHandlers
+  - HandlerMethodReturnValueHandlerComposite
+  - 디폴트 HandlerMethodReturnValueHandler 및 지원하는 리턴타입
+    - ListenableFutureReturnValueHandler
+      - ListenableFuture
+    - CompletableFutureReturnValueHandler
+      - CompletableFuture
+      - CompletionStage
+    - SendToMethodReturnValueHandler
+      - @SendTo(value="destination Array") PayloadType payload
+      - @SendToUser
+      - messageTemplate를 통해 리턴 객체를 다시 메시지로 만들어서 Annotation에 명시된 destination에 전달
+    - SubscriptionMethodReturnValueHandler
+      - @SubscribeMapping (SendTo,SendToUser는 없어야함.)

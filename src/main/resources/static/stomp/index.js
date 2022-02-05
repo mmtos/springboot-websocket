@@ -1,9 +1,8 @@
 import websocket from "/stomp/websocket.js";
 
 const subscribeBaseUri = "/topic/season/"
-const enterUri = "/echoApp/enter"
-const sendUri = "/echoApp/sendMessage"
-
+const enterUri = (season) => `/echoApp/${season}/enter`
+const sendUri = (season) => `/echoApp/${season}/sendMessage`
 export function start(){
     websocket.connect();
 }
@@ -15,8 +14,8 @@ export function subscribe(season){
     websocket.stomp.subscribe(subscribeUri, (receivedMessage) => {
         console.log(receivedMessage);
     });
-    websocket.stomp.send(enterUri,{},JSON.stringify({message:"안녕하세요.",season:season}));
+    websocket.stomp.send(enterUri(season),{},JSON.stringify({message:"안녕하세요."}));
 }
 export function send(season,message){
-    websocket.stomp.send(sendUri,{},JSON.stringify({message:message,season:season}));
+    websocket.stomp.send(sendUri(season),{},JSON.stringify({message:message}));
 }
