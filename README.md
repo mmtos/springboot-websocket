@@ -1,5 +1,24 @@
 # 20220204 Websocket
 
+
+## Todo 
+- [ ] 전달받은 메시지 repository에 저장하기
+- [ ] Topic 구독중인 Client에게 서버에 캐시된 데이터 주기적으로 전달하기.
+
+## Error
+### maven wrapper를 통한 빌드 및 테스트 실패 (JDK,JRE 불일치 )
+- testCompile단계에서 JDK 버전이 맞지 않는 현상 : invalid target 11
+    - JAVA_HOME 환경변수에 jdk11 경로 설정
+- test 단계에서 jre 를 1.8버전을 사용하는 문제 발생 : up to java version 52..
+    - Path 환경변수에 jdk11/bin 추가
+
+### Webjars가 빌드 결과 jar에 포함되지 않음
+- https://www.baeldung.com/maven-webjars
+- lib/ 에 webjar가 포함되어 있다. 해당 webjar를 열어보면 META-INF/resource/ 안에 .js 파일이 있다.
+- http://localhost:8080/webjars/stomp-websocket/2.3.4/stomp.js 로 접근 가능한걸 확인하였음.
+- <script>로 load시 window.Stomp로 사용 가능하다.
+
+
 ## EchoApp 설계
 - Topic은 사계절로 한다. (winter, spring, summer, autumn)
 - Client는 하나 이상의 Topic을 Subscribe한다.
@@ -7,7 +26,7 @@
 - 참고 URL 
   - https://velog.io/@cksal5911/WebSoket-stompJSReact-%EC%B1%84%ED%8C%85-1
   - https://dev-gorany.tistory.com/235
-
+  
 ## 배경지식
 - 웹소켓 Connection을 맺기 전에 Handshake Request를 먼저 수행한다.
   - handshake request의 주요 Headers
@@ -108,4 +127,6 @@
    - 역할 2 : sends messages to subscribers.
      - Message Type : org.springframework.messaging.simp.SimpMessageType
      - handleMessageInternal(message)
-3. 
+3. SimpMessagingTemplate 
+
+

@@ -1,0 +1,42 @@
+<html>
+<body>
+<script src="/webjars/stomp-websocket/2.3.4/stomp.js"></script>
+<script type="module">
+import {start,close,subscribe,send} from '/stomp/index.js';
+window.onClickStart = start;
+window.onClickClose = close;
+window.onClickSubscribe = subscribe;
+window.onClickSend = function(season) {
+    const id = season+"_input";
+    const message = document.getElementById(id).value;
+    send(season,message);
+};
+
+</script>
+<h1> GET STARTED </h1>
+<button type="button" onclick="onClickStart()">소켓 연결 시작</button>
+<button type="button" onclick="onClickClose()">소켓 연결 종료</button>
+<button type="button" onclick="onClickSubscribe('spring')">spring 채널 구독</button>
+<button type="button" onclick="onClickSubscribe('summer')">summer 채널 구독</button>
+<button type="button" onclick="onClickSubscribe('autumn')">autumn 채널 구독</button>
+<button type="button" onclick="onClickSubscribe('winter')">winter 채널 구독</button>
+<div class="inputs">
+    <div>
+        <input type="text" id="spring_input"/>
+        <button type="button" onclick="onClickSend('spring')">spring message 전송</button>
+    </div>
+    <div>
+        <input type="text" id="summer_input"/>
+        <button type="button" onclick="onClickSend('summer')">summer message 전송</button>
+    </div>
+    <div>
+        <input type="text" id="autumn_input"/>
+        <button type="button" onclick="onClickSend('autumn')">autumn message 전송</button>
+    </div>
+    <div>
+        <input type="text" id="winter_input"/>
+        <button type="button" onclick="onClickSend('winter')">winter message 전송</button>
+    </div>
+</div>
+</body>
+</html>
