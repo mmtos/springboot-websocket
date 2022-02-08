@@ -26,6 +26,6 @@ public class EchoMemoryRepository {
     }
 
     public List<EchoPayloadDTO> getAllMessage(String season){
-        return Collections.unmodifiableList(messageCacheMap.get(season));
+        return Collections.unmodifiableList(messageCacheMap.getOrDefault(season, Collections.EMPTY_LIST));
     }
 }

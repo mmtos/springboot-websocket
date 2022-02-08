@@ -1,6 +1,7 @@
 package com.example.ws.app.echo.controller;
 
 import com.example.ws.app.echo.dto.EchoPayloadDTO;
+import com.example.ws.app.echo.repository.EchoMemoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class EchoAppController {
 
     private final SimpMessagingTemplate template;
+    private final EchoMemoryRepository repository;
 
     @MessageMapping("/{season}/enter")
     @SendTo("/topic/season/{season}")
@@ -32,6 +34,7 @@ public class EchoAppController {
         EchoPayloadDTO payload = message.getPayload();
         log.info(headerMap.toString());
         String fullMessage = season + "(by new subscriber," + simpSessionId + ") : " + payload.getMessage();
+        repository.push(season,new EchoPayloadDTO(fullMessage));
         return new EchoPayloadDTO(fullMessage);
     }
 
@@ -44,6 +47,7 @@ public class EchoAppController {
         // 이미 subscribe를 완료한 client에서 전달하는 추가 메세지
         EchoPayloadDTO payload = message.getPayload();
         String fullMessage = season + "(" + simpSessionId + ") : " + payload.getMessage();
+        repository.push(season,new EchoPayloadDTO(fullMessage));
         return new EchoPayloadDTO(fullMessage);
     }
 }

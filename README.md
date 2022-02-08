@@ -2,8 +2,8 @@
 
 
 ## Todo 
-- [ ] 전달받은 메시지 repository에 저장하기
-- [ ] Topic 구독중인 Client에게 서버에 캐시된 데이터 주기적으로 전달하기.
+- [x] 전달받은 메시지 repository에 저장하기
+- [x] Topic 구독중인 Client에게 서버에 캐시된 데이터 주기적으로 전달하기.
 
 ## Error
 ### maven wrapper를 통한 빌드 및 테스트 실패 (JDK,JRE 불일치 )
@@ -23,9 +23,12 @@
 - Topic은 사계절로 한다. (winter, spring, summer, autumn)
 - Client는 하나 이상의 Topic을 Subscribe한다.
 - Client에서 destination을 통해 특정 Topic으로 메시지를 보내면 해당 Topic을 구독하고 있는 모든 Client에게 메시지를 전달한다.
+- 구독중인 Client에게 서버에 캐시된 데이터를 주기적으로 전달한다.
+- 
 - 참고 URL 
   - https://velog.io/@cksal5911/WebSoket-stompJSReact-%EC%B1%84%ED%8C%85-1
   - https://dev-gorany.tistory.com/235
+  - https://www.baeldung.com/spring-boot-scheduled-websocket
   
 ## 배경지식
 - 웹소켓 Connection을 맺기 전에 Handshake Request를 먼저 수행한다.
